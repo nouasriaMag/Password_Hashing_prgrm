@@ -3,3 +3,5 @@
 #first : pip isntall pyargon2
 
 from pyargon2 import hash
+
+#for loop for a hash + input of a password
