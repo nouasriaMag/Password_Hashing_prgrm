@@ -31,5 +31,14 @@ class UserAuth:
     def login(self):
         pass
 
-    def _is_locked(self,user):
-        
+    def _is_locked(self,username:str) -> bool:
+        if username not in self.login_attempts:
+            return False
+
+        attempts, last_attempt = self.login_attempts[username]
+        if attempts >= self.max_attempts:
+            mins_passed = (datetime.now() - last_attempt).total_seconds() / 60
+            if mins_passed < self.lockout_minutes:
+                return True
+            del self.login_attempts[username]
+        return False
