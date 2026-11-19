@@ -42,3 +42,9 @@ class UserAuth:
                 return True
             del self.login_attempts[username]
         return False
+
+    def _track_attempts(self, username:str):
+        now = datetime.now()
+        if username in self.login_attempts:
+            attempts, _ = self.login_attempts[username]
+            self.login_attempts[username] = (attempts +1, now)
