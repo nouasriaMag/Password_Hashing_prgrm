@@ -7,11 +7,29 @@ def hash_pwd(password:str, rounds=12) -> bytes:
     print(pwd)
     return pwd
 
-<<<<<<< HEAD
 def check_pwd(password:str, hash:bytes) -> bool:
     return bcrypt.checkpw(password.encode(), hash)
-=======
-from pyargon2 import hash
 
-#for loop for a hash + input of a password
->>>>>>> refs/remotes/origin/main
+class UserAuth:
+    def __init__(self):
+        self.users = {}
+        self.login_attempts = {}
+        self.max_attemps = 3
+        self.lockout_minutes = 15
+
+    def add_user(self, username:str, password:str) -> bool:
+        if username in self.users:
+            return False
+
+        self.users[username] = {
+            'pwd_hash': hash_pwd(password),
+            'created_at': datetime.now(),
+            'pwd_rounds': 12
+        }
+        return True
+
+    def login(self):
+        pass
+
+    def _is_locked(self,user):
+        
