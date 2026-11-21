@@ -3,8 +3,7 @@ from typing import Tuple
 from datetime import datetime
 
 def hash_pwd(password:str, rounds=12) -> bytes:
-    pwd = bcrypt.hashpw(password.encode(), bcrypt.gensalt(rounds=12))
-    print(pwd)
+    pwd = bcrypt.hashpw(password.encode(), bcrypt.gensalt(rounds=rounds))
     return pwd
 
 def check_pwd(password:str, hash:bytes) -> bool:
@@ -14,7 +13,7 @@ class UserAuth:
     def __init__(self):
         self.users = {}
         self.login_attempts = {}
-        self.max_attemps = 3
+        self.max_attempts = 3
         self.lockout_minutes = 15
 
     def add_user(self, username:str, password:str) -> bool:
@@ -28,8 +27,18 @@ class UserAuth:
         }
         return True
 
-    def login(self):
-        pass
+    def login(self, username: str, password: str) -> bool:
+        if self._is_locked(username):
+            return False
+        user = self.users.get(username)
+        if user is None:
+            self._track_attempts(username)
+            return False
+        if check_pwd(password, user['pwd_hash']):
+            self.login_attempts.pop(username, None)
+            return True
+        self._track_attempts(username)
+        return False
 
     def _is_locked(self,username:str) -> bool:
         if username not in self.login_attempts:
@@ -48,3 +57,6 @@ class UserAuth:
         if username in self.login_attempts:
             attempts, _ = self.login_attempts[username]
             self.login_attempts[username] = (attempts +1, now)
+
+        else:
+            self.login_attempts[username] = (1, now)
