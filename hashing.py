@@ -59,3 +59,9 @@ class UserAuth:
 
         else:
             self.login_attempts[username] = (1, now)
+
+
+#quick example of a salt:
+h = bcrypt.hashpw(b"alli2008", bcrypt.gensalt())
+#the b ^ within bcrypt.hashpw makes a bytes literal instead of a normal string
+print(h)
