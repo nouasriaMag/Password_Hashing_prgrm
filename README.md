@@ -9,4 +9,4 @@ so what we're going to do is to install bcrypt via the venv.
 This program is a password hashing progran.
 Password hashing turns a password into a fixed-length scrambled string using a one-way function, so the real password is never stored. At login you hash what the user typed and compare it to the stored hash.
 
-![Test output](images/Screenshot_20261121_111040.png)
+![Test output](Screenshot_20261121_111040.png)
