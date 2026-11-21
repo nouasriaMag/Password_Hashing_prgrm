@@ -1,5 +1,4 @@
 import bcrypt
-from typing import Tuple
 from datetime import datetime
 
 def hash_pwd(password:str, rounds=12) -> bytes:
